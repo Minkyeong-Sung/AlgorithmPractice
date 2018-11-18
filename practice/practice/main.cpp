@@ -1,36 +1,48 @@
-#include <vector>
 #include <stdexcept>
 #include <iostream>
+#include <list>
 
-class SortedSearch
+class TrainComposition
 {
 public:
-    static int countNumbers(const std::vector<int>& sortedVector, int lessThan)
+    
+    std::list<int> li;
+    
+    void attachWagonFromLeft(int wagonId)
     {
-        int start = 0;
-        int end = sortedVector.size() ;
-        int mid = 0;
-        
-        while(start < end){
-            mid = (start + end)/2;
-            
-            // find count
-            if(sortedVector[mid] < lessThan){
-                start = mid + 1;
-            }
-            else { // sotredVector[mid] > lessThan
-                end = mid;
-            }
-        }
-        return start;
+        li.push_back(wagonId);
+        //throw std::logic_error("Waiting to be implemented");
+    }
+    
+    void attachWagonFromRight(int wagonId)
+    {
+        li.push_front(wagonId);
+        //throw std::logic_error("Waiting to be implemented");
+    }
+    
+    int detachWagonFromLeft()
+    {
+        int data = li.back();
+        li.pop_back();
+        return data;
+        //throw std::logic_error("Waiting to be implemented");
+    }
+    
+    int detachWagonFromRight()
+    {
+        int data = li.front();
+        li.pop_front();
+        return data;
     }
 };
 
 #ifndef RunTests
 int main()
 {
-    std::vector<int> v { 1, 3, 4, 5, 7 };
-    std::cout << SortedSearch::countNumbers(v, 4);
+    TrainComposition tree;
+    tree.attachWagonFromLeft(7);
+    tree.attachWagonFromLeft(13);
+    std::cout << tree.detachWagonFromRight() << "\n"; // 7
+    std::cout << tree.detachWagonFromLeft(); // 13
 }
 #endif
-
