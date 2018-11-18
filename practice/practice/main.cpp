@@ -1,50 +1,79 @@
+#include <stdexcept>
+#include <string>
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
-class MergeNames
+class Node
 {
 public:
-    static vector<string> unique_names(const vector<string>& names1, const vector<string>& names2)
+    Node(int value, Node* left, Node* right)
     {
-        vector<string> vt;
-        int flag = 0;
+        this->value = value;
+        this->left = left;
+        this->right = right;
+    }
+    
+    int getValue() const
+    {
+        return value;
+    }
+    
+    Node* getLeft() const
+    {
+        return left;
+    }
+    
+    Node* getRight() const
+    {
+        return right;
+    }
+    
+private:
+    int value;
+    Node* left;
+    Node* right;
+};
+
+class BinarySearchTree
+{
+public:
+    static bool contains(const Node& root, int value)
+    {
         
-        for(int i=0; i<names1.size(); i++){
-            vt.push_back(names1[i]);
+        if(root.getValue() == value){
+            return true;
         }
-        
-        for(int i=0; i< names2.size(); i++){
+        else if(root.getValue() < value){
             
-            vt.push_back(names2[i]);
+            if(root.getRight() != NULL){
+                return contains( *root.getRight() , value);
+            }
+            else{
+                return false;
+            }
+            
         }
-        
-        // 중복된 이름 모두 삭제
-        for(int i=0; i<vt.size(); i++){
-            for(int j=i+1; j< vt.size(); j++){
-             
-                if(vt[i] == vt[j]){
-                    vt.erase(vt.begin()+j);
-                    
-                }
+        else{
+            
+            if(root.getLeft() != NULL){
+                return contains( *root.getLeft() , value);
+            }
+            else{
+                return false;
             }
         }
         
-        return vt;
     }
 };
 
 #ifndef RunTests
 int main()
 {
-    vector<string> names1 = {"Ava", "Emma", "Olivia"};
-    vector<string> names2 = {"Olivia", "Sophia", "Emma"};
+    Node n1(1, NULL, NULL);
+    Node n3(3, NULL, NULL);
+    Node n2(2, &n1, &n3);
     
-    vector<string> result = MergeNames::unique_names(names1, names2);
-    for(auto element : result)
-    {
-        cout << element << ' '; // should print Ava Emma Olivia Sophia
-    }
+    cout << BinarySearchTree::contains(n2, 3);
 }
 #endif
