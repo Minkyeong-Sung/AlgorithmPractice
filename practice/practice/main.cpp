@@ -1,30 +1,37 @@
-#include <string>
-#include <stdexcept>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
-class Palindrome
+class TextInput
 {
 public:
-    static bool isPalindrome(const string& word)
-    {
-        int j= word.size()-1;
-        for(int i=0; i<= word.size()/2; i++, j--){
-            
-            
-            if( toupper(word[i]) != toupper(word[j])){
-                return false;
-            }
-        }
-        return true;
-        //throw logic_error("Waiting to be implemented");
+    string value;
+    virtual void add(char c) {
+        value+= c;
     }
+    
+    string getValue() { return value; }
+};
+
+class NumericInput : public TextInput {
+    
+    void add(char c){
+        
+        if( c >= '0'  && c <= '9'){
+            value += c;
+        }
+    }
+    
 };
 
 #ifndef RunTests
 int main()
 {
-    cout << Palindrome::isPalindrome("Deleveled");
+    TextInput* input = new NumericInput();
+    input->add('1');
+    input->add('a');
+    input->add('0');
+    std::cout << input->getValue();
 }
 #endif
