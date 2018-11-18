@@ -1,79 +1,36 @@
+#include <vector>
 #include <stdexcept>
-#include <string>
 #include <iostream>
 
-using namespace std;
-
-class Node
+class SortedSearch
 {
 public:
-    Node(int value, Node* left, Node* right)
+    static int countNumbers(const std::vector<int>& sortedVector, int lessThan)
     {
-        this->value = value;
-        this->left = left;
-        this->right = right;
-    }
-    
-    int getValue() const
-    {
-        return value;
-    }
-    
-    Node* getLeft() const
-    {
-        return left;
-    }
-    
-    Node* getRight() const
-    {
-        return right;
-    }
-    
-private:
-    int value;
-    Node* left;
-    Node* right;
-};
-
-class BinarySearchTree
-{
-public:
-    static bool contains(const Node& root, int value)
-    {
+        int start = 0;
+        int end = sortedVector.size() ;
+        int mid = 0;
         
-        if(root.getValue() == value){
-            return true;
-        }
-        else if(root.getValue() < value){
+        while(start < end){
+            mid = (start + end)/2;
             
-            if(root.getRight() != NULL){
-                return contains( *root.getRight() , value);
+            // find count
+            if(sortedVector[mid] < lessThan){
+                start = mid + 1;
             }
-            else{
-                return false;
-            }
-            
-        }
-        else{
-            
-            if(root.getLeft() != NULL){
-                return contains( *root.getLeft() , value);
-            }
-            else{
-                return false;
+            else { // sotredVector[mid] > lessThan
+                end = mid;
             }
         }
-        
+        return start;
     }
 };
 
 #ifndef RunTests
 int main()
 {
-    Node n1(1, NULL, NULL);
-    Node n3(3, NULL, NULL);
-    Node n2(2, &n1, &n3);
-    
-    cout << BinarySearchTree::contains(n2, 3);
+    std::vector<int> v { 1, 3, 4, 5, 7 };
+    std::cout << SortedSearch::countNumbers(v, 4);
 }
 #endif
+
